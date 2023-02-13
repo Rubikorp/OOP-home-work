@@ -13,6 +13,7 @@ public class RobotMap {
     public RobotMap(int n, int m) {
         this.n = n;
         this.m = m;
+        validateParametrCreateMap(n, m);
         this.robots = new ArrayList<>();
     }
 
@@ -41,6 +42,10 @@ public class RobotMap {
             if (robotPoint.equals(point)) {
                 throw new IllegalStateException("Точка " + point + " занята!");
             }
+        }
+    private void validateParametrCreateMap(int m, int n) {
+        if (n <= 0 || m <= 0) {
+            throw new IllegalStateException("Некоректное значение параметров!");
         }
     }
 
