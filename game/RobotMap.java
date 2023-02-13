@@ -20,7 +20,11 @@ public class RobotMap {
     public Robot createRobot(Point point) {
         validatePoint(point);
         Robot robot = new Robot(point);
-        robots.add(robot);
+        if (robots.size() != 5) {
+            robots.add(robot);
+        } else {
+            throw new IllegalStateException("Роботов не должно быть больше 5!");
+        }
 
         return robot;
     }
