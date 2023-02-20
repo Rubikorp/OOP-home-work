@@ -1,4 +1,4 @@
-package ru.gb.lesson2.game;
+p676666666666666666666ackage ru.gb.lesson2.game;
 
 public class RoadObstacleAdapter implements Obstacle {
 
