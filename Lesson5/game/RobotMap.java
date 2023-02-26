@@ -1,7 +1,8 @@
-package ru.gb.lesson1.game;
+package game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.*;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -40,6 +41,7 @@ public class RobotMap {
 
         return Optional.empty();
     }
+    
 
     private void validatePoint(Point point) {
         validatePointIsCorrect(point);
@@ -92,6 +94,10 @@ public class RobotMap {
 
             System.out.println("Робот переместился с " + point + " на " + newPoint);
             this.point = newPoint;
+        }
+
+        public void deleteRobot(Robot robot) {
+            robots.remove(robot);
         }
 
         @Override

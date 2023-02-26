@@ -1,4 +1,4 @@
-package ru.gb.lesson1.game;
+package game;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -20,16 +20,15 @@ public class RobotGameMain {
 
         final CommandManager manager = new CommandManager(map);
         while (true) {
-            System.out.println("""
-                    Доступные действия:
-                    1. Для создания робота введите create x y, где x и y - координаты для нового робота
-                    2. Для вывода списка всех созданных роботов, введите list
-                    3. Для перемещения робота введите move id, где id - идентификатор робота
-                    4. Для изменения направления введите changedir id DIRECTION, где id - идентификатор робота, DIRECTION - одно из значений {TOP, RIGHT, BOTTOM, LEFT}
-                    5. Для удаления робота введите delete id, где id - идентификатор робота
-                    6. Для выхода напишите exit
+            System.out.println("Доступные действия:\n
+                    1. Для создания робота введите create x y, где x и y - координаты для нового робота\n
+                    2. Для вывода списка всех созданных роботов, введите list\n
+                    3. Для перемещения робота введите move id, где id - идентификатор робота\n
+                    4. Для изменения направления введите changedir id DIRECTION, где id - идентификатор робота, DIRECTION - одно из значений {TOP, RIGHT, BOTTOM, LEFT}\n
+                    5. Для удаления робота введите delete id, где id - идентификатор робота\n
+                    6. Для выхода напишите exit\n
                     ... список будет пополняться
-                    """);
+                    ");
 
             String command = sc.nextLine();
             manager.acceptCommand(command);
@@ -55,6 +54,8 @@ public class RobotGameMain {
             initCreateCommandHandler();
             initListCommandHandler();
             initMoveCommandHandler();
+            initChangedirCommandHandler();
+            initDeleteCommandHandler();
         }
 
         private void initCreateCommandHandler() {
@@ -91,6 +92,60 @@ public class RobotGameMain {
           //                System.out.println(robot);
           //            }
           //        });
+                }
+            });
+        }
+
+        private void initDeleteCommandHandler() {
+            handlers.add(new CommandHandler() {
+                @Override
+                public String name() {
+                    return "delete";
+                }
+
+                @Override
+                public void runCommand(String[] args) {
+                    Long robotId = Long.parseLong(args[0]);
+                    Optional<RobotMap.Robot> robot = map.getById(robotId);
+                    robot.ifPresentOrElse(new Consumer<RobotMap.Robot>() {
+                            @Override
+                            public void accept(RobotMap.Robot robot) {
+                                robot.deleteRobot(robot);
+                                System.out.println("Робот с идентификатором " + robotId + "удален");
+                            }
+                        }, new Runnable() {
+                            @Override
+                            public void run() {
+                                System.out.println("Робот с идентификатором " + robotId + " не найден");
+                            }
+                        });
+                }
+            });
+        }
+
+        private void initChangedirCommandHandler() {
+            handlers.add(new CommandHandler() {
+                @Override
+                public String name() {
+                    return "changedir";
+                }
+                @Override
+                public void runCommand(String[] args) {
+                    Long robotId = Long.parseLong(args[0]);
+                    Direction direction = Direction.ofString(args[1]);
+                    Optional<RobotMap.Robot> robot = map.getById(robotId);
+                    robot.ifPresentOrElse(new Consumer<RobotMap.Robot>() {
+                            @Override
+                            public void accept(RobotMap.Robot robot) {
+                                robot.changeDirection(direction);
+                                System.out.println("Робот с идентификатором " + robotId + "повернулся " + args[1]);
+                            }
+                        }, new Runnable() {
+                            @Override
+                            public void run() {
+                                System.out.println("Робот с идентификатором " + robotId + " не найден");
+                            }
+                        });
                 }
             });
         }
@@ -135,6 +190,8 @@ public class RobotGameMain {
                 }
             });
         }
+        
+        
 
         public void acceptCommand(String command) {
             String[] split = command.split(" ");

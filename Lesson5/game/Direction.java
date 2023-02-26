@@ -1,4 +1,4 @@
-package ru.gb.lesson1.game;
+package game;
 
 public enum Direction {
 
