@@ -5,6 +5,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+public interface RobotInterface {
+    public void changeDirection(Direction direction);
+    public void move();
+}
+
 public class RobotMap {
 
     private final int n;
@@ -61,7 +66,7 @@ public class RobotMap {
         }
     }
 
-    public class Robot {
+    public class Robot implements RobotInterface {
 
         public static final Direction DEFAULT_DIRECTION = Direction.TOP;
 
